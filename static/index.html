@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Free Fire JWT Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            max-width: 900px; 
+            margin: 30px auto; 
+            padding: 20px; 
+            background: #0a0a0f; 
+            color: #e0e0e0; 
+            line-height: 1.6;
+        }
+        .container { 
+            background: linear-gradient(145deg, #12121f, #1a1a2e); 
+            padding: 35px; 
+            border-radius: 16px; 
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+        h1 { 
+            color: #ff0066; 
+            text-align: center; 
+            font-size: 2.2em;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+        .endpoint { 
+            background: #0a0a1a; 
+            padding: 18px 20px; 
+            border-radius: 10px; 
+            margin: 15px 0;
+            border-left: 3px solid #ff0066;
+        }
+        .endpoint code { 
+            color: #00e676; 
+            background: transparent; 
+            padding: 2px 8px; 
+            border-radius: 4px;
+            font-size: 1.1em;
+            word-break: break-all;
+        }
+        .method {
+            display: inline-block;
+            background: #ff0066;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8em;
+            margin-right: 10px;
+        }
+        .param { color: #ffd700; font-weight: bold; }
+        .response { 
+            background: #0a0a1a; 
+            padding: 18px; 
+            border-radius: 10px; 
+            overflow-x: auto;
+            border: 1px solid rgba(255,255,255,0.05);
+            margin: 10px 0;
+        }
+        .response pre {
+            color: #a0e0a0;
+            font-size: 0.9em;
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .success { color: #00e676; }
+        .error { color: #ff1744; }
+        hr { border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 25px 0; }
+        ul { list-style: none; padding: 0; }
+        ul li { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        ul li:last-child { border-bottom: none; }
+        .footer {
+            text-align: center;
+            color: #444;
+            font-size: 0.8em;
+            margin-top: 30px;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(0,230,118,0.1);
+            color: #00e676;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            border: 1px solid rgba(0,230,118,0.2);
+        }
+        .troubleshoot {
+            background: rgba(255,215,0,0.05);
+            border: 1px solid rgba(255,215,0,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .troubleshoot h3 { color: #ffd700; margin-bottom: 10px; }
+        .troubleshoot li { color: #aaa; }
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.6em; }
+            .endpoint code { font-size: 0.9em; }
+        }
+        .test-form {
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .test-form input {
+            width: 100%;
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: #0a0a1a;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 1em;
+        }
+        .test-form input:focus {
+            outline: none;
+            border-color: #ff0066;
+        }
+        .test-form button {
+            width: 100%;
+            padding: 12px;
+            background: #ff0066;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .test-form button:hover {
+            background: #cc0055;
+        }
+        .result-box {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #0a0a1a;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .result-box.show {
+            display: block;
+        }
+        .result-box .label {
+            color: #888;
+            font-size: 0.85em;
+        }
+        .result-box .value {
+            color: #00e676;
+            word-break: break-all;
+            font-size: 0.9em;
+        }
+        .result-box .value.error {
+            color: #ff1744;
+        }
+        .copy-btn {
+            background: rgba(0,230,118,0.1);
+            border: 1px solid rgba(0,230,118,0.2);
+            color: #00e676;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        .copy-btn:hover {
+            background: rgba(0,230,118,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 Free Fire JWT Generator</h1>
+        <p class="subtitle">Generate JWT tokens for Free Fire accounts</p>
+        
+        <div style="text-align:center;margin-bottom:20px;">
+            <span class="badge">● API v1.1</span>
+            <span class="badge" style="background:rgba(255,0,102,0.1);color:#ff0066;border-color:rgba(255,0,102,0.2);">● Enhanced Parsing</span>
+        </div>
+
+        <div class="test-form">
+            <h3 style="color:#ffd700;margin-bottom:15px;">🧪 Test Generator</h3>
+            <input type="text" id="uid" placeholder="UID (e.g., 123456789)" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button onclick="generateToken()">Generate JWT Token</button>
+            <div id="result" class="result-box">
+                <div class="label">Status:</div>
+                <div id="status" class="value"></div>
+                <div class="label" style="margin-top:10px;">JWT Token:</div>
+                <div id="token" class="value" style="font-size:0.8em;"></div>
+                <div class="label" style="margin-top:10px;">Account UID:</div>
+                <div id="account-uid" class="value"></div>
+                <div class="label" style="margin-top:10px;">Region:</div>
+                <div id="region" class="value"></div>
+            </div>
+        </div>
+
+        <hr>
+
+        <h2 style="color:#ffd700;font-size:1.2em;margin-bottom:15px;">📡 API Endpoint</h2>
+        <div class="endpoint">
+            <span class="method">GET</span>
+            <code>/token?uid={uid}&password={password}</code>
+        </div>
+
+        <h2 style="color:#ffd700;font-size:1.2em;margin:20px 0 15px;">📝 Parameters</h2>
+        <ul>
+            <li>🔑 <span class="param">uid</span> — Free Fire Account UID <span style="color:#666;font-size:0.85em;">(required)</span></li>
+            <li>🔒 <span class="param">password</span> — Account Password <span style="color:#666;font-size:0.85em;">(required)</span></li>
+        </ul>
+
+        <div class="troubleshoot">
+            <h3>⚠️ Troubleshooting</h3>
+            <ul>
+                <li>❌ <strong>"No JWT token received"</strong> — Account may be banned or password is incorrect</li>
+                <li>❌ <strong>"Invalid UID or Password"</strong> — Check credentials and try again</li>
+                <li>✅ <strong>Success</strong> — JWT token generated and ready to use</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            Made with ❤️ by XANAF • Free Fire JWT Generator v1.1
+        </div>
+    </div>
+
+    <script>
+        async function generateToken() {
+            const uid = document.getElementById('uid').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const resultDiv = document.getElementById('result');
+            const statusEl = document.getElementById('status');
+            const tokenEl = document.getElementById('token');
+            const accountUidEl = document.getElementById('account-uid');
+            const regionEl = document.getElementById('region');
+
+            if (!uid || !password) {
+                alert('Please enter both UID and Password');
+                return;
+            }
+
+            resultDiv.classList.add('show');
+            statusEl.textContent = 'Generating...';
+            statusEl.className = 'value';
+            tokenEl.textContent = '';
+            accountUidEl.textContent = '';
+            regionEl.textContent = '';
+
+            try {
+                const response = await fetch(`/token?uid=${encodeURIComponent(uid)}&password=${encodeURIComponent(password)}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    statusEl.textContent = '✅ Success';
+                    statusEl.className = 'value success';
+                    tokenEl.textContent = data.jwt_token || 'Not found';
+                    if (data.jwt_token) {
+                        tokenEl.innerHTML = `<span style="word-break:break-all;">${data.jwt_token}</span> <button class="copy-btn" onclick="copyText('${data.jwt_token}')">Copy</button>`;
+                    }
+                    accountUidEl.textContent = data.account_uid || 'N/A';
+                    regionEl.textContent = data.region || 'N/A';
+                } else {
+                    statusEl.textContent = `❌ ${data.message}`;
+                    statusEl.className = 'value error';
+                    tokenEl.textContent = 'None';
+                    accountUidEl.textContent = 'N/A';
+                    regionEl.textContent = 'N/A';
+                }
+            } catch (error) {
+                statusEl.textContent = '❌ Network error. Please try again.';
+                statusEl.className = 'value error';
+            }
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Token copied to clipboard!');
+            }).catch(() => {
+                // Fallback
+                const input = document.createElement('input');
+                input.value = text;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                alert('Token copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>
